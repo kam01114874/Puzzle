@@ -44,6 +44,8 @@ else()
             board.h
             board.h
             board.h
+            ShuffleAlgorithm.h
+            game.h game.cpp
         )
     endif()
 endif()

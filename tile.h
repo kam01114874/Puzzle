@@ -29,7 +29,7 @@ protected:
 
 public:
     /**
-     * @brief Constructor initializing tile with a number and empty flag.
+     * @brief Constructor that initializes the tile with a given identifier and sets its empty state.
      * @param num Value of the tile.
      * @param empty Optional. Whether the tile is an empty tile (default: false).
      */
@@ -41,22 +41,23 @@ public:
     //virtual ~Tile() = default;
 
     /**
-     * @brief Gets the tile number.
-     * @return The numeric value of the tile.
-     */
+    * @brief Returns the numeric identifier of the tile.
+    * @return Integer representing the tile's value.
+    */
     int getNumber() const;
 
     /**
      * @brief Checks whether this is the empty tile.
+     * Helps distinguish movable tiles from the placeholder empty space.
      * @return True if the tile is empty, otherwise false.
      */
     bool isEmpty() const;
 
     /**
-     * @brief Pure virtual method to draw the tile.
-     *
-     * Must be implemented by all derived classes to render the tile.
-     */
+    * @brief Draws the tile to the console or interface.
+    *
+    * This is a pure virtual function and must be implemented by derived tile types.
+    */
     //virtual void draw() const = 0;
 };
 

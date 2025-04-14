@@ -1,35 +1,35 @@
 // #include "mainwindow.h"
 
 #include <iostream>
-#include "board.h"
+#include "game.h"
 
 // #include <QApplication>
 
 //int main(int argc, char *argv[])
 int main()
 {
-    Board board(3); // Tworzymy planszę 3x3
+    int size;
 
-    std::cout << "🔹 Początkowa plansza:\n";
-    board.draw();
+    std::cout << "Wybierz rozmiar planszy (3–7): ";
+    std::cin >> size;
 
-    // Ręczne wykonanie kilku ruchów
-    board.move(Direction::Right);  // Przesuwamy kafelek 1 w lewo
-    std::cout << "\n🔸 Plansza po przesunięciu kafelka 1 w lewo:\n";
-    board.draw();
-
-    board.move(Direction::Down);   // Przesuwamy kafelek 4 w górę
-    std::cout << "\n🔸 Plansza po przesunięciu kafelka 4 w górę:\n";
-    board.draw();
-
-
-
-    // Sprawdzenie poprawności ułożenia
-    if (board.isSolved()) {
-        std::cout << "\n✅ Plansza ułożona poprawnie!\n";
-    } else {
-        std::cout << "\n❌ Plansza NIE jest ułożona poprawnie!\n";
+    if (size < 3 || size > 7) {
+        std::cerr << "Niepoprawny rozmiar. Dozwolone wartości to 3, 4, 5, 6 lub 7." << std::endl;
+        return 1;
     }
+
+    Game game(size); // Tworzymy planszę sizexsize
+
+    std::cout << "Początkowa plansza:\n";
+    game.getBoard().draw(); // const& do Board, tylko odczyt
+    std::cout << std::endl;
+
+
+    std::cout << "Plansza po przetasowaniu:\n";
+    game.reset();
+    game.getBoard().draw();
+
+
 
     return 0;
     //QApplication a(argc, argv);

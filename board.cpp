@@ -26,6 +26,22 @@ Board::Board(int n) : size(n) {
 }
 
 /**
+ * @brief Gets two-dimensional container representing the tile grid.
+ * @return Tile grid reference.
+ */
+std::vector<std::vector<std::shared_ptr<Tile>>>& Board::getTiles() {
+    return tiles;
+}
+
+/**
+ * @brief Gets size of created board.
+ * @return Size of the board.
+ */
+int Board::getSize() {
+    return size;
+}
+
+/**
  * @brief The method tries to move a tile adjacent to an empty field in the specified direction.
  * If the movement is possible, it swaps the empty tile and the selected neighbor.
  * If not, nothing happens, the method returns false.

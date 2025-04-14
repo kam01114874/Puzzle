@@ -20,11 +20,13 @@ enum class Direction {
 
 /**
  * @class Board
- * @brief Class representing board of tiles.
+ * @brief Represents a 2D board of movable tiles in a puzzle game.
  *
- * This class represents board in a tile-based game.
- * It stores size of two-dimensional board and tile grid.
- * Provides methods for moving tiles, drawing the board, checking the game state and updating possible moves.
+ * Stores a 2D grid of tiles and provides methods for interaction:
+ * - Moving tiles
+ * - Checking win condition
+ * - Displaying the board
+ * - Accessing internal tile grid
  */
 class Board
 {
@@ -45,12 +47,27 @@ public:
     Board(int n);
 
     /**
-     * @brief Moves the tiles.
+     * @brief Returns a reference to the 2D tile grid.
+     * @warning Allows modification of internal tile structure.
+     * @return Reference to vector of vector of shared_ptr<Tile>.
+     */
+    std::vector<std::vector<std::shared_ptr<Tile>>>& getTiles();
+
+    /**
+     * @brief Gets size of created board.
+     * @return Size of the board.
+     */
+    int getSize();
+
+    /**
+     * @brief Attempts to move a tile in the given direction into the empty space.
+     * @param dir Direction in which to attempt the move.
+     * @return True if move was successful, false otherwise.
      */
     bool move(Direction dir);
 
     /**
-     * @brief Draws the board.
+     * @brief Displays the current board state.
      */
     void draw() const;
 
