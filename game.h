@@ -20,12 +20,24 @@
 class Game {
 private:
     Board board;
+
     /**
     * @brief Current row and column coordinates of the empty tile.
     * These values are updated during shuffling.
     */
     int emptyR, emptyC;
 
+    /**
+    * @brief Number of tile moves from beginning to the end of the game.
+    * This value is updated after every player move.
+    */
+    int moveCount;
+
+    /**
+    * @brief Creates copy of the board right after shuffling.
+    * Needed for reset() method.
+    */
+    Board startState;
 public:
     /**
      * @brief Constructor initializing game with a board of set size.
@@ -34,11 +46,35 @@ public:
     Game(int size);
 
     /**
-    * @brief Resets game by shuffling the board.
+    * @brief Starts the game by shuffling the board and resetting the move counter.
     * @details Uses the ShuffleAlgorithm template to perform a sequence of legal random moves.
-    * The number of moves equals 5 * board size. The empty tile's position is updated accordingly.
+    * The number of moves equals 6 * board size. The empty tile's position is updated accordingly.
+    * The initial shuffled board state is saved to allow game reset.
+    */
+    void start();
+
+    /**
+    * @brief Resets game by returning board state to right after shuffling and reseting moveCount.
     */
     void reset();
+
+    /**
+     * @brief Checks whether game is won.
+     * @return True if the tiles are in correct order, otherwise false.
+     */
+    bool isWon();
+
+    /**
+     * @brief Returns the current move count.
+     * @return Integer number of moves made since game start.
+     */
+    int getMoveCount() const;
+
+    /**
+     * @brief Counts moves made by player.
+     * @return Previous moveCount increased by 1.
+     */
+    void incrementMoveCount();
 
     /**
      * @brief Returns a reference to the board (read-only).
