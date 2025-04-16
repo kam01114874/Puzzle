@@ -5,65 +5,62 @@
  * Contains definitions of member functions of the Board class.
  */
 #include <iostream>
-#include <iomanip>
 #include "board.h"
+#include "animatedtile.h"
+#include "movingtile.h"
+#include "selectabletile.h"
 
-/**
- * @brief Constructs a Board with given size.
- * @param n Size of the board.
- */
-Board::Board(int n) : size(n) {
+
+Board::Board(int n, TileType type) : size(n), emptyR(0), emptyC(0) {
     tiles.resize(size);
-
     int number = 0;
+
     for (int r = 0; r < size; ++r) {
         tiles[r].reserve(size);
         for (int c = 0; c < size; ++c) {
             bool isEmpty = (number == 0);
-            tiles[r].emplace_back(std::make_shared<Tile>(number++, isEmpty));
+            std::shared_ptr<Tile> tile;
+
+            switch (type) {
+            case TileType::Moving:
+                tile = std::make_shared<MovingTile>(number, isEmpty);
+                break;
+            case TileType::Selectable:
+                tile = std::make_shared<SelectableTile>(number, isEmpty);
+                break;
+            case TileType::Animated:
+            default:
+                tile = std::make_shared<AnimatedTile>(number, isEmpty);
+                break;
+            }
+
+            if (isEmpty) {
+                emptyR = r;
+                emptyC = c;
+            }
+
+            tiles[r].emplace_back(tile);
+            ++number;
         }
     }
+    updateActiveTiles();
 }
 
-/**
- * @brief Gets two-dimensional container representing the tile grid.
- * @return Tile grid reference.
- */
-std::vector<std::vector<std::shared_ptr<Tile>>>& Board::getTiles() {
-    return tiles;
-}
-
-/**
- * @brief Gets size of created board.
- * @return Size of the board.
- */
-int Board::getSize() {
+int Board::getSize() const{
     return size;
 }
 
-/**
- * @brief The method tries to move a tile adjacent to an empty field in the specified direction.
- * If the movement is possible, it swaps the empty tile and the selected neighbor.
- * If not, nothing happens, the method returns false.
- * @return True if the tiles were swapped, false otherwise.
- */
+int Board::getEmptyR() const { return emptyR; }
+int Board::getEmptyC() const { return emptyC; }
+int& Board::getEmptyR() { return emptyR; }
+int& Board::getEmptyC() { return emptyC; }
+
+void Board::setEmptyPosition(int r, int c) {
+    emptyR = r;
+    emptyC = c;
+}
+
 bool Board::move(Direction dir) {
-    // Variables store the position of an empty tile on the n x n board (sentinel value)
-    int emptyR = -1, emptyC = -1;
-
-    // Find empty tile (value 0)
-    for (int r = 0; r < size; ++r) {
-        for (int c = 0; c < size; ++c) {
-            if (tiles[r][c]->isEmpty()) {
-                emptyR = r;
-                emptyC = c;
-                break;
-            }
-        }
-        // Check if empty file was found
-        if (emptyR != -1) break;
-    }
-
     // Specify the direction of the offset relative to the empty field
     int dr = 0, dc = 0;
     switch (dir) {
@@ -78,8 +75,18 @@ bool Board::move(Direction dir) {
 
     // Check if neighbor tile exists (move within board boundaries)
     if (newR >= 0 && newR < size && newC >= 0 && newC < size) {
+        auto movedTile = tiles[newR][newC];
         // Swap a tile with an empty field
         std::swap(tiles[emptyR][emptyC], tiles[newR][newC]);
+        emptyR = newR;
+        emptyC = newC;
+
+        updateActiveTiles();
+
+        // Mark tile thats going to replace empty tile as just moved.
+        if (auto moving = std::dynamic_pointer_cast<MovingTile>(movedTile)) {
+            moving->setMoved(true);
+        }
         return true;
     }
 
@@ -87,45 +94,28 @@ bool Board::move(Direction dir) {
     return false;
 };
 
-/**
- * @brief The method displays the state of the n x n board.
- * Prints the number of each tile (1..n*n-1), and 0 for an empty field.
- * Formats the layout into a grid (e.g. 4×4 puzzle).
- */
 void Board::draw() const {
-    const int fieldWidth = 4;
+    const int fieldWidth = 5;
 
-    // Horizontal line (e.g. "+----+----+")
     auto printHorizontalLine = [&]() {
         for (int i = 0; i < size; ++i) {
-            std::cout << "+";
-            std::cout << std::string(fieldWidth, '-');
+            std::cout << "+" << std::string(fieldWidth, '-');
         }
         std::cout << "+\n";
     };
 
-    // Main board
     for (int r = 0; r < size; ++r) {
-        // Line above row
         printHorizontalLine();
-
         for (int c = 0; c < size; ++c) {
-            int num = tiles[r][c]->getNumber();
-            std::cout << "|";
-            std::cout << std::setw(fieldWidth) << num;
+            tiles[r][c]->drawConsole();
         }
         std::cout << "|\n";
     }
-    // Last line
+
     printHorizontalLine();
     std::cout << std::endl;
 }
 
-/**
- * @brief The method is responsible for checking if all tiles are in the correct order, i.e.: 0, 1, 2, 3, ..., n*n-1
- * 0 means an empty field, which should be at the first position
- * @return True if the tiles are in correct order, false otherwise.
- */
 bool Board::isSolved() {
     // The empty file should be in the first position
     int expected = 0;
@@ -138,6 +128,36 @@ bool Board::isSolved() {
         }
     }
     return true;
+}
+
+void Board::updateActiveTiles() {
+    // Set all tiles as inactive.
+    for (auto& row : tiles) {
+        for (auto& tile : row) {
+            if (auto animated = std::dynamic_pointer_cast<AnimatedTile>(tile)) {
+                animated->setActive(false);
+            }
+            if (auto moving = std::dynamic_pointer_cast<MovingTile>(tile)) {
+                moving->setMoved(false);
+            }
+        }
+    }
+
+    // Check adjacent tiles.
+    std::vector<std::pair<int, int>> directions = {
+        { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }
+    };
+
+    for (const auto& [dr, dc] : directions) {
+        int nr = emptyR + dr;
+        int nc = emptyC + dc;
+
+        if (nr >= 0 && nr < size && nc >= 0 && nc < size) {
+            if (auto animated = std::dynamic_pointer_cast<AnimatedTile>(tiles[nr][nc])) {
+                animated->setActive(true);
+            }
+        }
+    }
 }
 
 

@@ -38,7 +38,7 @@ public:
     /**
      * @brief Virtual destructor.
      */
-    //virtual ~Tile() = default;
+    virtual ~Tile() = default;
 
     /**
     * @brief Returns the numeric identifier of the tile.
@@ -54,11 +54,18 @@ public:
     bool isEmpty() const;
 
     /**
-    * @brief Draws the tile to the console or interface.
+    * @brief Draws the tile to the console.
     *
     * This is a pure virtual function and must be implemented by derived tile types.
     */
-    //virtual void draw() const = 0;
+    virtual void drawConsole() const = 0;
+
+    /**
+    * @brief Draws the tile to the interface.
+    *
+    * This is a pure virtual function and must be implemented by derived tile types.
+    */
+    //virtual void drawGraphics(QPainter* painter, const QRect& rect) const = 0;
 };
 
 #endif // TILE_H

@@ -46,6 +46,9 @@ else()
             board.h
             ShuffleAlgorithm.h
             game.h game.cpp
+            animatedtile.h animatedtile.cpp
+            movingtile.h movingtile.cpp
+            selectabletile.h selectabletile.cpp
         )
     endif()
 endif()

@@ -10,6 +10,31 @@
 int main()
 {
     int size;
+    char mode;
+    TileType type;
+
+    do {
+        std::cout << "Wybierz tryb gry:\n";
+        std::cout << "0 - Tryb podstawowy\n";
+        std::cout << "1 - Tryb z podświetlaniem ostatniego ruchu\n";
+        std::cin >> mode;
+        std::cout << std::endl;
+
+        switch (mode) {
+        case '0':
+            type = TileType::Animated;
+            break;
+        case '1':
+            type = TileType::Moving;
+            break;
+        default:
+            std::cout << "Wybrano nieprawidłowy typ gry. Spróbuj ponownie.\n";
+            std::cout << std::endl;
+            mode = 'a';
+            break;
+        }
+
+    } while (mode != '0' && mode != '1');
 
     std::cout << "Wybierz rozmiar planszy (3–7): ";
     std::cin >> size;
@@ -20,7 +45,7 @@ int main()
         return 1;
     }
 
-    Game game(size); // Tworzymy planszę sizexsize
+    Game game(size, type); // Tworzymy planszę sizexsize
 
     std::cout << "Początkowa plansza:\n";
     game.getBoard().draw(); // const& do Board, tylko odczyt
@@ -62,11 +87,10 @@ int main()
         }
         std::cout << std::endl;
 
-        if (game.getBoard().move(d)) {
+        if (game.move(d)) {
             std::cout << "Aktualizacja planszy:\n";
             std::cout << std::endl;
             game.getBoard().draw();
-            game.incrementMoveCount();
             std::cout << "Ilość wykonanych ruchów: " << game.getMoveCount();
             std::cout << std::endl;
             std::cout << std::endl;
@@ -81,7 +105,6 @@ int main()
     {
         std::cout << "Układanka ułożona poprawnie! Gratulacje!\n";
     }
-
 
     return 0;
     //QApplication a(argc, argv);

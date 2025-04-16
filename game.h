@@ -22,12 +22,6 @@ private:
     Board board;
 
     /**
-    * @brief Current row and column coordinates of the empty tile.
-    * These values are updated during shuffling.
-    */
-    int emptyR, emptyC;
-
-    /**
     * @brief Number of tile moves from beginning to the end of the game.
     * This value is updated after every player move.
     */
@@ -40,21 +34,24 @@ private:
     Board startState;
 public:
     /**
-     * @brief Constructor initializing game with a board of set size.
-     * @param size Size of the board.
-     */
-    Game(int size);
+    * @brief Constructs a new Game with a board of given size and tile type.
+    * @param size Board size (e.g. 3 = 3x3).
+    * @param type Tile type to initialize the board with.
+    */
+    Game(int size, TileType type);
 
     /**
-    * @brief Starts the game by shuffling the board and resetting the move counter.
-    * @details Uses the ShuffleAlgorithm template to perform a sequence of legal random moves.
-    * The number of moves equals 6 * board size. The empty tile's position is updated accordingly.
-    * The initial shuffled board state is saved to allow game reset.
+    * @brief Starts a new game by shuffling the board and resetting the move counter.
+    *
+    * The shuffle is done via ShuffleAlgorithm using legal tile moves.
+    * Stores the initial shuffled state to enable future resets.
     */
     void start();
 
     /**
-    * @brief Resets game by returning board state to right after shuffling and reseting moveCount.
+    * @brief Resets the game to the state right after the most recent shuffle.
+    *
+    * Restores the board to its stored shuffled state and resets the move counter.
     */
     void reset();
 
@@ -71,10 +68,18 @@ public:
     int getMoveCount() const;
 
     /**
-     * @brief Counts moves made by player.
-     * @return Previous moveCount increased by 1.
-     */
+    * @brief Increments the move counter after a successful move.
+    */
     void incrementMoveCount();
+
+    /**
+    * @brief Attempts to move a tile in the given direction and updates move counter.
+    *
+    * Calls Board::move to perform the move. If successful, increments the move counter.
+    * @param dir Direction in which to move the tile.
+    * @return True if the tile was moved successfully.
+    */
+    bool move(Direction dir);
 
     /**
      * @brief Returns a reference to the board (read-only).
