@@ -3,19 +3,21 @@
  * @brief Implementation of the MovingTile class.
  */
 #include "movingtile.h"
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
-
-void MovingTile::setMoved (bool moved) {
+void MovingTile::setMoved(bool moved)
+{
     wasMoved = moved;
 }
 
-bool MovingTile::wasRecentlyMoved() const {
+bool MovingTile::wasRecentlyMoved() const
+{
     return wasMoved;
 }
 
-void MovingTile::drawConsole() const {
+void MovingTile::drawConsole() const
+{
     std::ostringstream out;
 
     if (isEmpty()) {

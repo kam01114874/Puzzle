@@ -17,6 +17,7 @@ protected:
      * @brief Indicates whether the tile is currently selected.
      */
     bool selected = false;
+
 public:
     /**
      * @brief Inherits constructors from AnimatedTile.

@@ -7,11 +7,15 @@
 
 #include "game.h"
 
-Game::Game(int size, TileType type) : board(size, type), startState(size, type) {}
+Game::Game(int size, TileType type)
+    : board(size, type)
+    , startState(size, type)
+{}
 
-void Game::start() {
+void Game::start()
+{
     moveCount = 0;
-    auto& tiles = board.getTiles();
+    auto &tiles = board.getTiles();
     ShuffleAlgorithm<std::shared_ptr<Tile>> shuffler;
     shuffler.shuffle(tiles, board.getSize() * 6, board.getEmptyR(), board.getEmptyC());
     board.updateActiveTiles();
@@ -19,25 +23,30 @@ void Game::start() {
     startState = board;
 }
 
-void Game::reset() {
+void Game::reset()
+{
     board = startState;
     board.updateActiveTiles();
     moveCount = 0;
 }
 
-bool Game::isWon() {
+bool Game::isWon()
+{
     return board.isSolved();
 }
 
-int Game::getMoveCount() const {
+int Game::getMoveCount() const
+{
     return moveCount;
 }
 
-void Game::incrementMoveCount() {
+void Game::incrementMoveCount()
+{
     ++moveCount;
 }
 
-bool Game::move(Direction dir) {
+bool Game::move(Direction dir)
+{
     bool moved = board.move(dir);
     if (moved) {
         incrementMoveCount();
@@ -45,10 +54,12 @@ bool Game::move(Direction dir) {
     return moved;
 }
 
-const Board& Game::getBoard() const {
+const Board &Game::getBoard() const
+{
     return board;
 }
 
-Board& Game::getBoard() {
+Board &Game::getBoard()
+{
     return board;
 }

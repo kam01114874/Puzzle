@@ -3,23 +3,26 @@
  * @brief Implementation of the SelectableTile class.
  */
 #include "selectabletile.h"
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
-
-void SelectableTile::setSelected(bool select) {
+void SelectableTile::setSelected(bool select)
+{
     selected = select;
 }
 
-bool SelectableTile::isSelected() const {
+bool SelectableTile::isSelected() const
+{
     return selected;
 }
 
-void SelectableTile::toggleSelected() {
+void SelectableTile::toggleSelected()
+{
     selected = !selected;
 }
 
-void SelectableTile::drawConsole() const {
+void SelectableTile::drawConsole() const
+{
     std::ostringstream out;
 
     if (isEmpty()) {

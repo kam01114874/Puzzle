@@ -5,10 +5,10 @@
 #ifndef SHUFFLEALGORITHM_H
 #define SHUFFLEALGORITHM_H
 
-#include <vector>
-#include <random>
-#include <algorithm>
 #include "board.h"
+#include <algorithm>
+#include <random>
+#include <vector>
 
 /**
  * @class ShuffleAlgorithm
@@ -20,7 +20,8 @@
  * @tparam T The type of elements stored in the puzzle grid (e.g., shared_ptr<Tile>).
  */
 template<typename T>
-class ShuffleAlgorithm {
+class ShuffleAlgorithm
+{
 public:
     /**
     * @brief Shuffles the board by performing legal random moves of the empty tile.
@@ -30,7 +31,7 @@ public:
     * @param emptyR Row index of the empty tile at the start; updated to final row after shuffling.
     * @param emptyC Column index of the empty tile at the start; updated to final column after shuffling.
     */
-    void shuffle(std::vector<std::vector<T>>& grid, int moves, int& emptyR, int& emptyC);
+    void shuffle(std::vector<std::vector<T>> &grid, int moves, int &emptyR, int &emptyC);
 
 private:
     /**
@@ -45,18 +46,27 @@ private:
 };
 
 template<typename T>
-Direction ShuffleAlgorithm<T>::getOpposite(Direction dir) {
+Direction ShuffleAlgorithm<T>::getOpposite(Direction dir)
+{
     switch (dir) {
-    case Direction::Up:    return Direction::Down;
-    case Direction::Down:  return Direction::Up;
-    case Direction::Left:  return Direction::Right;
-    case Direction::Right: return Direction::Left;
+    case Direction::Up:
+        return Direction::Down;
+    case Direction::Down:
+        return Direction::Up;
+    case Direction::Left:
+        return Direction::Right;
+    case Direction::Right:
+        return Direction::Left;
     }
     return dir;
 }
 
 template<typename T>
-void ShuffleAlgorithm<T>::shuffle(std::vector<std::vector<T>>& grid, int moves, int& emptyR, int& emptyC) {
+void ShuffleAlgorithm<T>::shuffle(std::vector<std::vector<T>> &grid,
+                                  int moves,
+                                  int &emptyR,
+                                  int &emptyC)
+{
     // Size of the puzzle board.
     int size = grid.size();
     // Variable to store the last move made.
@@ -69,9 +79,10 @@ void ShuffleAlgorithm<T>::shuffle(std::vector<std::vector<T>>& grid, int moves, 
     std::mt19937 gen(rd());
 
     // Vector of all possible directions to move an empty field.
-    std::vector<Direction> directions = {
-        Direction::Up, Direction::Down, Direction::Left, Direction::Right
-    };
+    std::vector<Direction> directions = {Direction::Up,
+                                         Direction::Down,
+                                         Direction::Left,
+                                         Direction::Right};
 
     // Performs 'moves' number of shuffle attempts.
     for (int i = 0; i < moves; ++i) {
@@ -90,10 +101,18 @@ void ShuffleAlgorithm<T>::shuffle(std::vector<std::vector<T>>& grid, int moves, 
             // Change the direction to coordinates
             int dr = 0, dc = 0;
             switch (dir) {
-            case Direction::Up:    dr = -1; break;
-            case Direction::Down:  dr =  1; break;
-            case Direction::Left:  dc = -1; break;
-            case Direction::Right: dc =  1; break;
+            case Direction::Up:
+                dr = -1;
+                break;
+            case Direction::Down:
+                dr = 1;
+                break;
+            case Direction::Left:
+                dc = -1;
+                break;
+            case Direction::Right:
+                dc = 1;
+                break;
             }
 
             // New coordinates of the empty field after making the move.
@@ -118,10 +137,18 @@ void ShuffleAlgorithm<T>::shuffle(std::vector<std::vector<T>>& grid, int moves, 
             for (Direction dir : directions) {
                 int dr = 0, dc = 0;
                 switch (dir) {
-                case Direction::Up:    dr = -1; break;
-                case Direction::Down:  dr =  1; break;
-                case Direction::Left:  dc = -1; break;
-                case Direction::Right: dc =  1; break;
+                case Direction::Up:
+                    dr = -1;
+                    break;
+                case Direction::Down:
+                    dr = 1;
+                    break;
+                case Direction::Left:
+                    dc = -1;
+                    break;
+                case Direction::Right:
+                    dc = 1;
+                    break;
                 }
 
                 int newR = emptyR + dr;
@@ -140,4 +167,3 @@ void ShuffleAlgorithm<T>::shuffle(std::vector<std::vector<T>>& grid, int moves, 
     }
 }
 #endif // SHUFFLEALGORITHM_H
-

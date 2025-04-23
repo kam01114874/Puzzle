@@ -1,16 +1,11 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include "tile.h"
 #include <memory>
 #include <vector>
-#include "tile.h"
 
-
-enum class TileType {
-    Animated,
-    Moving,
-    Selectable
-};
+enum class TileType { Animated, Moving, Selectable };
 
 /**
  * @class Direction
@@ -18,12 +13,7 @@ enum class TileType {
  *
  * This class represents the direction in which the tile can be moved.
  */
-enum class Direction {
-    Up,
-    Down,
-    Left,
-    Right
-};
+enum class Direction { Up, Down, Left, Right };
 
 /**
  * @class Board
@@ -57,6 +47,7 @@ private:
      * @brief Two-dimensional container representing the tile grid using the coordinates [row][column].
      */
     std::vector<std::vector<std::shared_ptr<Tile>>> tiles;
+
 public:
     /**
      * @brief Constructs a square board with given tile type.
@@ -69,13 +60,13 @@ public:
     * @brief Returns a reference to the tile grid.
     * @return Reference to a 2D vector of shared pointers to tiles.
     */
-    std::vector<std::vector<std::shared_ptr<Tile>>>& getTiles() { return tiles; }
+    std::vector<std::vector<std::shared_ptr<Tile>>> &getTiles() { return tiles; }
 
     /**
     * @brief Returns a const reference to the tile grid (read-only access).
     * @return Const reference to a 2D vector of shared pointers to tiles.
     */
-    const std::vector<std::vector<std::shared_ptr<Tile>>>& getTiles() const { return tiles; }
+    const std::vector<std::vector<std::shared_ptr<Tile>>> &getTiles() const { return tiles; }
 
     /**
      * @brief Gets size of created board.
@@ -94,11 +85,11 @@ public:
     /**
     * @brief Returns a reference to the empty tile's row index (modifiable).
     */
-    int& getEmptyR();
+    int &getEmptyR();
     /**
     * @brief Returns a reference to the empty tile's column index (modifiable).
     */
-    int& getEmptyC();
+    int &getEmptyC();
 
     /**
     * @brief Manually sets the empty tile coordinates.

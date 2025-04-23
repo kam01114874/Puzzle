@@ -29,7 +29,7 @@ public:
      * @brief Sets whether this tile is active.
      * @param isActive True if the tile should be marked as active (movable), false otherwise.
      */
-    void setActive (bool isActive);
+    void setActive(bool isActive);
 
     /**
      * @brief Checks whether the tile is active.

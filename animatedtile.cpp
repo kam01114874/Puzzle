@@ -3,19 +3,21 @@
  * @brief Implementation of the AnimatedTile class.
  */
 #include "animatedtile.h"
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
-
-void AnimatedTile::setActive (bool isActive) {
+void AnimatedTile::setActive(bool isActive)
+{
     active = isActive;
 }
 
-bool AnimatedTile::isActive() const {
+bool AnimatedTile::isActive() const
+{
     return active;
 }
 
-void AnimatedTile::drawConsole() const {
+void AnimatedTile::drawConsole() const
+{
     std::ostringstream out;
 
     if (isEmpty()) {

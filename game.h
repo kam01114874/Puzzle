@@ -5,8 +5,8 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "board.h"
 #include "ShuffleAlgorithm.h"
+#include "board.h"
 
 /**
  * @class Game
@@ -17,7 +17,8 @@
  *
  * @note The board is not shuffled automatically on creation – call reset() explicitly.
  */
-class Game {
+class Game
+{
 private:
     Board board;
 
@@ -32,6 +33,7 @@ private:
     * Needed for reset() method.
     */
     Board startState;
+
 public:
     /**
     * @brief Constructs a new Game with a board of given size and tile type.
@@ -85,13 +87,13 @@ public:
      * @brief Returns a reference to the board (read-only).
      * @return Const reference to the board.
      */
-    const Board& getBoard() const;
+    const Board &getBoard() const;
 
     /**
      * @brief Returns a reference to the board (modifiable).
      * @return Reference to the board.
      */
-    Board& getBoard();
+    Board &getBoard();
 };
 
 #endif // GAME_H

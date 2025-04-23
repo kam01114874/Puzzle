@@ -7,13 +7,17 @@
 
 #include "tile.h"
 
+Tile::Tile(int num, bool empty)
+    : number(num)
+    , isEmptyTile(empty)
+{}
 
-Tile::Tile(int num, bool empty) : number(num), isEmptyTile(empty) {}
-
-int Tile::getNumber() const {
+int Tile::getNumber() const
+{
     return number;
 }
 
-bool Tile::isEmpty() const {
+bool Tile::isEmpty() const
+{
     return isEmptyTile;
 }

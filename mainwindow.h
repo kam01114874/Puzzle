@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "game.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,7 +18,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_newGameButton_clicked();
+
 private:
     Ui::MainWindow *ui;
+    std::unique_ptr<Game> game;
 };
+
+
 #endif // MAINWINDOW_H

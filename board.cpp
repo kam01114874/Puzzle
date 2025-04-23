@@ -4,14 +4,17 @@
  *
  * Contains definitions of member functions of the Board class.
  */
-#include <iostream>
 #include "board.h"
 #include "animatedtile.h"
 #include "movingtile.h"
 #include "selectabletile.h"
+#include <iostream>
 
-
-Board::Board(int n, TileType type) : size(n), emptyR(0), emptyC(0) {
+Board::Board(int n, TileType type)
+    : size(n)
+    , emptyR(0)
+    , emptyC(0)
+{
     tiles.resize(size);
     int number = 0;
 
@@ -46,28 +49,51 @@ Board::Board(int n, TileType type) : size(n), emptyR(0), emptyC(0) {
     updateActiveTiles();
 }
 
-int Board::getSize() const{
+int Board::getSize() const
+{
     return size;
 }
 
-int Board::getEmptyR() const { return emptyR; }
-int Board::getEmptyC() const { return emptyC; }
-int& Board::getEmptyR() { return emptyR; }
-int& Board::getEmptyC() { return emptyC; }
+int Board::getEmptyR() const
+{
+    return emptyR;
+}
+int Board::getEmptyC() const
+{
+    return emptyC;
+}
+int &Board::getEmptyR()
+{
+    return emptyR;
+}
+int &Board::getEmptyC()
+{
+    return emptyC;
+}
 
-void Board::setEmptyPosition(int r, int c) {
+void Board::setEmptyPosition(int r, int c)
+{
     emptyR = r;
     emptyC = c;
 }
 
-bool Board::move(Direction dir) {
+bool Board::move(Direction dir)
+{
     // Specify the direction of the offset relative to the empty field
     int dr = 0, dc = 0;
     switch (dir) {
-    case Direction::Up:    dr = -1; break;
-    case Direction::Down:  dr = 1; break;
-    case Direction::Left:  dc = -1; break;
-    case Direction::Right: dc = 1; break;
+    case Direction::Up:
+        dr = -1;
+        break;
+    case Direction::Down:
+        dr = 1;
+        break;
+    case Direction::Left:
+        dc = -1;
+        break;
+    case Direction::Right:
+        dc = 1;
+        break;
     }
 
     int newR = emptyR + dr;
@@ -94,7 +120,8 @@ bool Board::move(Direction dir) {
     return false;
 };
 
-void Board::draw() const {
+void Board::draw() const
+{
     const int fieldWidth = 5;
 
     auto printHorizontalLine = [&]() {
@@ -116,7 +143,8 @@ void Board::draw() const {
     std::cout << std::endl;
 }
 
-bool Board::isSolved() {
+bool Board::isSolved()
+{
     // The empty file should be in the first position
     int expected = 0;
 
@@ -130,10 +158,11 @@ bool Board::isSolved() {
     return true;
 }
 
-void Board::updateActiveTiles() {
+void Board::updateActiveTiles()
+{
     // Set all tiles as inactive.
-    for (auto& row : tiles) {
-        for (auto& tile : row) {
+    for (auto &row : tiles) {
+        for (auto &tile : row) {
             if (auto animated = std::dynamic_pointer_cast<AnimatedTile>(tile)) {
                 animated->setActive(false);
             }
@@ -144,11 +173,9 @@ void Board::updateActiveTiles() {
     }
 
     // Check adjacent tiles.
-    std::vector<std::pair<int, int>> directions = {
-        { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }
-    };
+    std::vector<std::pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
-    for (const auto& [dr, dc] : directions) {
+    for (const auto &[dr, dc] : directions) {
         int nr = emptyR + dr;
         int nc = emptyC + dc;
 
@@ -159,7 +186,3 @@ void Board::updateActiveTiles() {
         }
     }
 }
-
-
-
-
