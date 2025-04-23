@@ -30,3 +30,29 @@ void AnimatedTile::drawConsole() const
 
     std::cout << "|" << std::setw(5) << std::left << out.str();
 }
+
+void AnimatedTile::drawGraphics(QPainter* painter, const QRect& rect) const {
+    painter->save();
+
+    painter->fillRect(rect, Qt::white);
+    painter->setBrush(Qt::NoBrush);
+
+    //Blue frame - tile next to empty tile.
+    if (active) {
+        QPen pen(QColor("#007FFF"));
+        pen.setWidth(4);
+        painter->setPen(pen);
+        painter->drawRect(rect);
+    }
+
+    //Number in the middle.
+    if (!isEmpty()) {
+        painter->setPen(Qt::darkGray);
+        painter->setFont(QFont("Arial", 16, QFont::Bold));
+        painter->drawText(rect, Qt::AlignCenter, QString::number(getNumber()));
+    }
+
+    painter->restore();
+}
+
+

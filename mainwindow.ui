@@ -30,8 +30,8 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>9</y>
-       <width>321</width>
+       <y>10</y>
+       <width>381</width>
        <height>21</height>
       </rect>
      </property>
@@ -60,7 +60,27 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="resetButton">
+        <property name="text">
+         <string>Reset</string>
+        </property>
+       </widget>
+      </item>
      </layout>
+    </widget>
+    <widget class="QLabel" name="moveCountLabel">
+     <property name="geometry">
+      <rect>
+       <x>580</x>
+       <y>10</y>
+       <width>191</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Licznik ruchów: 0</string>
+     </property>
     </widget>
    </widget>
    <widget class="BoardWidget" name="boardWidget" native="true">
@@ -99,6 +119,38 @@
     <hint type="destinationlabel">
      <x>94</x>
      <y>32</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>resetButton</sender>
+   <signal>clicked()</signal>
+   <receiver>resetButton</receiver>
+   <slot>toggle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>288</x>
+     <y>27</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>288</x>
+     <y>27</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>shuffleButton</sender>
+   <signal>clicked()</signal>
+   <receiver>shuffleButton</receiver>
+   <slot>toggle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>258</x>
+     <y>28</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>258</x>
+     <y>28</y>
     </hint>
    </hints>
   </connection>

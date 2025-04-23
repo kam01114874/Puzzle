@@ -43,6 +43,8 @@ public:
      * Shows empty tiles as "[  ]", active tiles as ">X<", and normal tiles as " X ".
      */
     void drawConsole() const override;
+
+    void drawGraphics(QPainter* painter, const QRect& rect) const override;
 };
 
 #endif // ANIMATEDTILE_H

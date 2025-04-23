@@ -17,7 +17,7 @@ void Game::start()
     moveCount = 0;
     auto &tiles = board.getTiles();
     ShuffleAlgorithm<std::shared_ptr<Tile>> shuffler;
-    shuffler.shuffle(tiles, board.getSize() * 6, board.getEmptyR(), board.getEmptyC());
+    shuffler.shuffle(tiles, board.getSize() * 10, board.getEmptyR(), board.getEmptyC());
     board.updateActiveTiles();
     // Save current shuffled board to enable reset later
     startState = board;

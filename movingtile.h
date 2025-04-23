@@ -46,6 +46,8 @@ public:
      * - Regular tile: " X "
      */
     void drawConsole() const override;
+
+    void drawGraphics(QPainter* painter, const QRect& rect) const override;
 };
 
 #endif // MOVINGTILE_H

@@ -6,7 +6,7 @@ NewGameDialog::NewGameDialog(QWidget *parent)
     , ui(new Ui::NewGameDialog)
 {
     ui->setupUi(this);
-    //Default tile type
+    //Default tile type (Animated)
     ui->radioAnimated->setChecked(true);
 }
 
@@ -17,11 +17,13 @@ NewGameDialog::~NewGameDialog()
 
 int NewGameDialog::getBoardSize() const
 {
+    //Returns the selected board size from combo box (3-7)
     return ui->comboBoxSize->currentText().toInt();
 }
 
 TileType NewGameDialog::getTileType() const
 {
+    //Returns selected tile type: Moving or Animated
     if (ui->radioMoving->isChecked())
         return TileType::Moving;
     else
