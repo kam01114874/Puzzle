@@ -33,34 +33,41 @@ void MovingTile::drawConsole() const
     std::cout << "|" << std::setw(5) << std::left << out.str();
 }
 
-void MovingTile::drawGraphics(QPainter* painter, const QRect& rect) const {
+void MovingTile::drawGraphics(QPainter* painter, const QRect& rect, const QPixmap& tileImage) const {
     //Save current painting style.
     painter->save();
 
-    painter->fillRect(rect, Qt::white);
-    painter->setBrush(Qt::NoBrush);
+    //Light gray color for empty tile, white for the rest
+    QColor background = isEmpty() ? QColor(240, 240, 240) : Qt::white;
+    painter->fillRect(rect, background);
+
+    //Draw image
+    if (!isEmpty() && !tileImage.isNull()) {
+        painter->drawPixmap(rect, tileImage.scaled(rect.size(), Qt::KeepAspectRatioByExpanding));
+    }
 
     //Blue frame - tile next to empty tile.
     if (active) {
-        QPen bluePen(QColor("#007FFF"));
+        QPen bluePen(QColor("#0059b3"));
         bluePen.setWidth(4);
         painter->setPen(bluePen);
         painter->drawRect(rect);
     }
 
-    //Green frame - last moved tile.
+    //Yellow(ish) frame - last moved tile.
     if (wasMoved) {
-        QPen greenPen(QColor("#32CD32"));
+        QPen greenPen(QColor("#FFD580"));
         greenPen.setWidth(2);
         painter->setPen(greenPen);
-        QRect inner = rect.adjusted(3, 3, -3, -3); // Nachodząca
+        //Don't replace all of blue frame
+        QRect inner = rect.adjusted(3, 3, -3, -3);
         painter->drawRect(inner);
     }
 
     //Number in the middle.
     if (!isEmpty()) {
-        painter->setPen(Qt::darkGray);
-        painter->setFont(QFont("Arial", 16, QFont::Bold));
+        painter->setPen(QColor(50, 50, 50));
+        painter->setFont(QFont("Arial", 12, QFont::Bold));
         painter->drawText(rect, Qt::AlignCenter, QString::number(getNumber()));
     }
 

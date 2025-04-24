@@ -7,7 +7,6 @@
 #include "board.h"
 #include "animatedtile.h"
 #include "movingtile.h"
-#include "selectabletile.h"
 #include <iostream>
 
 Board::Board(int n, TileType type)
@@ -27,9 +26,6 @@ Board::Board(int n, TileType type)
             switch (type) {
             case TileType::Moving:
                 tile = std::make_shared<MovingTile>(number, isEmpty);
-                break;
-            case TileType::Selectable:
-                tile = std::make_shared<SelectableTile>(number, isEmpty);
                 break;
             case TileType::Animated:
             default:
@@ -58,14 +54,17 @@ int Board::getEmptyR() const
 {
     return emptyR;
 }
+
 int Board::getEmptyC() const
 {
     return emptyC;
 }
+
 int &Board::getEmptyR()
 {
     return emptyR;
 }
+
 int &Board::getEmptyC()
 {
     return emptyC;

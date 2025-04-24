@@ -4,12 +4,9 @@
 
 #include <ui_mainwindow.h>
 #include <QMessageBox>
+#include <QPixmap>
 
-
-
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 }
@@ -21,12 +18,23 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_newGameButton_clicked()
 {
+    //Mainwindow = parent
     NewGameDialog dialog(this);
     if (dialog.exec() == QDialog::Accepted) {
         int size = dialog.getBoardSize();
         TileType type = dialog.getTileType();
 
+        //game = std::make_unique<Game>(size, type); <=> std::unique_ptr<Game>(new Game(size, type));
         game = std::make_unique<Game>(size, type);
+
+        QString imagePath = dialog.getImagePath();
+        QPixmap pixmap(imagePath);
+        if (!pixmap.isNull()) {
+            game->setImage(pixmap);
+        }
+
+        // QPixmap test(":/images/img1.png");
+        // qDebug() << "img1 loaded?" << !test.isNull();
 
         ui->boardWidget->setGame(game.get());
         ui->boardWidget->update();
@@ -78,4 +86,28 @@ void MainWindow::onTileMoved() {
 void MainWindow::onPuzzleSolved() {
     //Show message when puzzle is successfully solved
     QMessageBox::information(this, "Gratulacje", "Układanka została ułożona poprawnie!");
+}
+
+void MainWindow::on_previewButton_clicked()
+{
+    if (!game) return;
+
+    //Getter for image
+    QPixmap fullImage = game->getFullImage();
+
+    if (fullImage.isNull()) return;
+
+    //Close previous preview window
+    if (previewWindow) {
+        previewWindow->close();
+        delete previewWindow;
+        previewWindow = nullptr;
+    }
+
+    //Create new window
+    previewWindow = new PreviewWindow(fullImage);
+    previewWindow->setAttribute(Qt::WA_DeleteOnClose);
+    //Open in new window
+    previewWindow->setWindowFlag(Qt::Window);
+    previewWindow->show();
 }

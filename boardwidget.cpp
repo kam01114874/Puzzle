@@ -1,3 +1,8 @@
+/**
+ * @file boardwidget.cpp
+ * @brief Implementation of the BoardWidget class.
+ */
+
 #include "boardwidget.h"
 #include <QPainter>
 #include <QPen>
@@ -23,7 +28,7 @@ void BoardWidget::setGameStarted(bool started) {
 
 void BoardWidget::paintEvent(QPaintEvent *)
 {
-    if (!board) return;
+    if (!board || !game) return;
 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -31,8 +36,9 @@ void BoardWidget::paintEvent(QPaintEvent *)
     const int size = board->getSize();
     const auto& tiles = board->getTiles();
 
-    const int tileW = width() / size;
-    const int tileH = height() / size;
+    int boardSize = std::min(width(), height());
+    int tileW = boardSize / size;
+    int tileH = boardSize / size;
 
     //Adds spacing between tiles.
     const int spacing = 2;
@@ -42,10 +48,19 @@ void BoardWidget::paintEvent(QPaintEvent *)
             const auto& tile = tiles[r][c];
             //Basic tile rectangle.
             QRect rect(c * tileW, r * tileH, tileW, tileH);
+            //Make sure to draw in the middle
+            int offsetX = (width() - boardSize) / 2;
+            int offsetY = (height() - boardSize) / 2;
             //Reduce rect by spacing for a gap
-            QRect padded = rect.adjusted(spacing / 2, spacing / 2, -spacing / 2, -spacing / 2);
+            QRect padded(offsetX + c * tileW, offsetY + r * tileH, tileW, tileH);
 
-            tile->drawGraphics(&painter, padded);
+            //Get fragment for tile
+            QPixmap fragment;
+            if (game && !tile->isEmpty()) {
+                fragment = game->getTileImageByNumber(tile->getNumber());
+            }
+
+            tile->drawGraphics(&painter, padded, fragment);
         }
     }
 }
@@ -95,4 +110,9 @@ void BoardWidget::mousePressEvent(QMouseEvent* event) {
             setEnabled(false);
         }
     }
+}
+
+void BoardWidget::resizeEvent(QResizeEvent* event){
+    update();
+    QWidget::resizeEvent(event);
 }

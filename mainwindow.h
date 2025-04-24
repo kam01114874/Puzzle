@@ -8,6 +8,7 @@
 
 #include <QMainWindow>
 #include "game.h"
+#include "previewwindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -66,9 +67,15 @@ private slots:
      */
     void onPuzzleSolved();
 
+    /**
+     * @brief Opens a preview window displaying the full puzzle image.
+     */
+    void on_previewButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     std::unique_ptr<Game> game;
+    PreviewWindow* previewWindow = nullptr;
 };
 
 

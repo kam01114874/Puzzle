@@ -2,6 +2,7 @@
 #define ANIMATEDTILE_H
 
 #include "tile.h"
+#include "game.h"
 
 /**
  * @class AnimatedTile
@@ -44,7 +45,7 @@ public:
      */
     void drawConsole() const override;
 
-    void drawGraphics(QPainter* painter, const QRect& rect) const override;
+    void drawGraphics(QPainter* painter, const QRect& rect, const QPixmap& tileImage) const override;
 };
 
 #endif // ANIMATEDTILE_H

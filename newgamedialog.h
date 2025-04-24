@@ -7,7 +7,14 @@
 #define NEWGAMEDIALOG_H
 
 #include <QDialog>
-#include "board.h"
+#include <QFileDialog>
+#include <QDir>
+#include <QRandomGenerator>
+#include <QPixmap>
+#include <ui_newgamedialog.h>
+
+#include "game.h"
+
 
 namespace Ui {
 class NewGameDialog;
@@ -45,8 +52,15 @@ public:
      */
     TileType getTileType() const;
 
+    /**
+     * @brief Retrieves the path of the selected puzzle image.
+     * @return QString representing the image file path or resource URL (e.g. ":/images/assets/img1.png").
+     */
+    QString getImagePath() const;
+
 private:
     Ui::NewGameDialog *ui;
+    QString selectedImagePath;
 };
 
 #endif // NEWGAMEDIALOG_H

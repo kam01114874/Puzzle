@@ -47,7 +47,18 @@ public:
      */
     void drawConsole() const override;
 
-    void drawGraphics(QPainter* painter, const QRect& rect) const override;
+    /**
+    * @brief Draws the tile on a graphical interface using QPainter.
+    *
+    * This method renders the tile as a rectangle filled with either a solid background
+    * or an image fragment. It also draws decorative frames if the tile is active or recently moved,
+    * and overlays the tile number if it's not an empty tile.
+    *
+    * @param painter Pointer to the QPainter used for drawing on the widget.
+    * @param rect Rectangle area in which the tile should be drawn.
+    * @param tileImage Cropped fragment of the full puzzle image corresponding to this tile.
+    */
+    void drawGraphics(QPainter* painter, const QRect& rect, const QPixmap& tileImage) const override;
 };
 
 #endif // MOVINGTILE_H
