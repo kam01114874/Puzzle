@@ -37,22 +37,26 @@ void BoardWidget::paintEvent(QPaintEvent *)
     const auto& tiles = board->getTiles();
 
     int boardSize = std::min(width(), height());
-    int tileW = boardSize / size;
-    int tileH = boardSize / size;
+    const int tileSize = boardSize / size;
 
     //Adds spacing between tiles.
     const int spacing = 2;
 
+    //Make sure to draw in the middle
+    const int offsetX = (width() - boardSize) / 2;
+    const int offsetY = (height() - boardSize) / 2;
+
     for (int r = 0; r < size; ++r) {
         for (int c = 0; c < size; ++c) {
             const auto& tile = tiles[r][c];
-            //Basic tile rectangle.
-            QRect rect(c * tileW, r * tileH, tileW, tileH);
-            //Make sure to draw in the middle
-            int offsetX = (width() - boardSize) / 2;
-            int offsetY = (height() - boardSize) / 2;
-            //Reduce rect by spacing for a gap
-            QRect padded(offsetX + c * tileW, offsetY + r * tileH, tileW, tileH);
+
+            //Tile size and position
+            QRect padded(
+                offsetX + c * tileSize + spacing / 2,
+                offsetY + r * tileSize + spacing / 2,
+                tileSize - spacing,
+                tileSize - spacing
+                );
 
             //Get fragment for tile
             QPixmap fragment;
@@ -66,16 +70,24 @@ void BoardWidget::paintEvent(QPaintEvent *)
 }
 
 void BoardWidget::mousePressEvent(QMouseEvent* event) {
-    if (!game) return;
-    if (!gameStarted) return;
+    if (!game || !gameStarted) return;
 
     const int size = board->getSize();
-    int tileW = width() / size;
-    int tileH = height() / size;
+    const int boardSize = std::min(width(), height());
+    const int tileSize = boardSize / size;
+
+    const int offsetX = (width() - boardSize) / 2;
+    const int offsetY = (height() - boardSize) / 2;
+
+    //Mouse click relative to center of the board
+    int x = event->position().x() - offsetX;
+    int y = event->position().y() - offsetY;
+
+    if (x < 0 || y < 0 || x >= boardSize || y >= boardSize) return;
 
     //Mose press position
-    int col = event->position().x() / tileW;
-    int row = event->position().y() / tileH;
+    int col = x / tileSize;
+    int row = y / tileSize;
 
     int emptyR = board->getEmptyR();
     int emptyC = board->getEmptyC();
