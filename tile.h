@@ -67,7 +67,8 @@ public:
     *
     * This is a pure virtual function and must be implemented by derived tile types.
     */
-    virtual void drawGraphics(QPainter* painter, const QRect& rect, const QPixmap& tileImage) const = 0;
+    virtual void drawGraphics(QPainter *painter, const QRect &rect, const QPixmap &tileImage) const
+        = 0;
 };
 
 #endif // TILE_H

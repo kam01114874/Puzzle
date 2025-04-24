@@ -58,7 +58,7 @@ public:
     * @param rect Rectangle area in which the tile should be drawn.
     * @param tileImage Cropped fragment of the full puzzle image corresponding to this tile.
     */
-    void drawGraphics(QPainter* painter, const QRect& rect, const QPixmap& tileImage) const override;
+    void drawGraphics(QPainter *painter, const QRect &rect, const QPixmap &tileImage) const override;
 };
 
 #endif // MOVINGTILE_H

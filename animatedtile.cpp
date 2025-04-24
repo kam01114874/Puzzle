@@ -31,7 +31,8 @@ void AnimatedTile::drawConsole() const
     std::cout << "|" << std::setw(5) << std::left << out.str();
 }
 
-void AnimatedTile::drawGraphics(QPainter* painter, const QRect& rect, const QPixmap& tileImage) const {
+void AnimatedTile::drawGraphics(QPainter *painter, const QRect &rect, const QPixmap &tileImage) const
+{
     painter->save();
 
     //Light gray color for empty tile, white for the rest
@@ -60,5 +61,3 @@ void AnimatedTile::drawGraphics(QPainter* painter, const QRect& rect, const QPix
 
     painter->restore();
 }
-
-

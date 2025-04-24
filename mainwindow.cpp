@@ -1,12 +1,14 @@
 #include "mainwindow.h"
-#include "newgamedialog.h"
 #include "boardwidget.h"
+#include "newgamedialog.h"
 
-#include <ui_mainwindow.h>
 #include <QMessageBox>
 #include <QPixmap>
+#include <ui_mainwindow.h>
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 }
@@ -28,9 +30,11 @@ void MainWindow::on_newGameButton_clicked()
         game = std::make_unique<Game>(size, type);
 
         QString imagePath = dialog.getImagePath();
-        QPixmap pixmap(imagePath);
+        QPixmap pixmap;
+        bool success = pixmap.load(imagePath);
+
         if (!pixmap.isNull()) {
-            game->setImage(pixmap);
+            ui->boardWidget->setImage(pixmap);
         }
 
         // QPixmap test(":/images/img1.png");
@@ -72,30 +76,35 @@ void MainWindow::on_shuffleButton_clicked()
     }
 }
 
-void MainWindow::updateMoveCount() {
+void MainWindow::updateMoveCount()
+{
     if (game) {
         ui->moveCountLabel->setText("Licznik ruchów: " + QString::number(game->getMoveCount()));
     }
 }
 
-void MainWindow::onTileMoved() {
+void MainWindow::onTileMoved()
+{
     //update counter after every tile move
     updateMoveCount();
 }
 
-void MainWindow::onPuzzleSolved() {
+void MainWindow::onPuzzleSolved()
+{
     //Show message when puzzle is successfully solved
     QMessageBox::information(this, "Gratulacje", "Układanka została ułożona poprawnie!");
 }
 
 void MainWindow::on_previewButton_clicked()
 {
-    if (!game) return;
+    if (!game)
+        return;
 
     //Getter for image
-    QPixmap fullImage = game->getFullImage();
+    QPixmap fullImage = ui->boardWidget->getFullImage();
 
-    if (fullImage.isNull()) return;
+    if (fullImage.isNull())
+        return;
 
     //Close previous preview window
     if (previewWindow) {

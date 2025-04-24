@@ -4,37 +4,40 @@
  */
 
 #include "boardwidget.h"
-#include <QPainter>
-#include <QPen>
 #include <QBrush>
 #include <QMouseEvent>
+#include <QPainter>
+#include <QPen>
 #include <cmath>
 
 BoardWidget::BoardWidget(QWidget *parent)
     : QWidget(parent)
 {}
 
-void BoardWidget::setGame(Game* g) {
+void BoardWidget::setGame(Game *g)
+{
     game = g;
     board = &(g->getBoard());
     gameStarted = false;
     update();
 }
 
-void BoardWidget::setGameStarted(bool started) {
+void BoardWidget::setGameStarted(bool started)
+{
     gameStarted = started;
     update();
 }
 
 void BoardWidget::paintEvent(QPaintEvent *)
 {
-    if (!board || !game) return;
+    if (!board || !game)
+        return;
 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
     const int size = board->getSize();
-    const auto& tiles = board->getTiles();
+    const auto &tiles = board->getTiles();
 
     int boardSize = std::min(width(), height());
     const int tileSize = boardSize / size;
@@ -48,20 +51,18 @@ void BoardWidget::paintEvent(QPaintEvent *)
 
     for (int r = 0; r < size; ++r) {
         for (int c = 0; c < size; ++c) {
-            const auto& tile = tiles[r][c];
+            const auto &tile = tiles[r][c];
 
             //Tile size and position
-            QRect padded(
-                offsetX + c * tileSize + spacing / 2,
-                offsetY + r * tileSize + spacing / 2,
-                tileSize - spacing,
-                tileSize - spacing
-                );
+            QRect padded(offsetX + c * tileSize + spacing / 2,
+                         offsetY + r * tileSize + spacing / 2,
+                         tileSize - spacing,
+                         tileSize - spacing);
 
             //Get fragment for tile
             QPixmap fragment;
             if (game && !tile->isEmpty()) {
-                fragment = game->getTileImageByNumber(tile->getNumber());
+                fragment = getTileImageByNumber(tile->getNumber());
             }
 
             tile->drawGraphics(&painter, padded, fragment);
@@ -69,8 +70,10 @@ void BoardWidget::paintEvent(QPaintEvent *)
     }
 }
 
-void BoardWidget::mousePressEvent(QMouseEvent* event) {
-    if (!game || !gameStarted) return;
+void BoardWidget::mousePressEvent(QMouseEvent *event)
+{
+    if (!game || !gameStarted)
+        return;
 
     const int size = board->getSize();
     const int boardSize = std::min(width(), height());
@@ -83,7 +86,8 @@ void BoardWidget::mousePressEvent(QMouseEvent* event) {
     int x = event->position().x() - offsetX;
     int y = event->position().y() - offsetY;
 
-    if (x < 0 || y < 0 || x >= boardSize || y >= boardSize) return;
+    if (x < 0 || y < 0 || x >= boardSize || y >= boardSize)
+        return;
 
     //Mose press position
     int col = x / tileSize;
@@ -103,11 +107,16 @@ void BoardWidget::mousePressEvent(QMouseEvent* event) {
     Direction dir;
 
     //Determine movement direction (clicked tile -> empty tile)
-    if (dr == 1 && dc == 0) dir = Direction::Down;       //clicked over empty tile
-    else if (dr == -1 && dc == 0) dir = Direction::Up;   //clicked under empty tile
-    else if (dr == 0 && dc == 1) dir = Direction::Right; //clicked on the left
-    else if (dr == 0 && dc == -1) dir = Direction::Left; //clicked on the right
-    else return;
+    if (dr == 1 && dc == 0)
+        dir = Direction::Down; //clicked over empty tile
+    else if (dr == -1 && dc == 0)
+        dir = Direction::Up; //clicked under empty tile
+    else if (dr == 0 && dc == 1)
+        dir = Direction::Right; //clicked on the left
+    else if (dr == 0 && dc == -1)
+        dir = Direction::Left; //clicked on the right
+    else
+        return;
 
     if (game->move(dir)) {
         //Notify MainWindow to update move count
@@ -124,7 +133,31 @@ void BoardWidget::mousePressEvent(QMouseEvent* event) {
     }
 }
 
-void BoardWidget::resizeEvent(QResizeEvent* event){
+void BoardWidget::resizeEvent(QResizeEvent *event)
+{
     update();
     QWidget::resizeEvent(event);
+}
+
+void BoardWidget::setImage(const QPixmap &img)
+{
+    fullImage = img;
+    imageMode = !img.isNull();
+    update();
+}
+
+QPixmap BoardWidget::getTileImageByNumber(int number) const
+{
+    if (!imageMode || fullImage.isNull()) {
+        return QPixmap();
+    }
+
+    int size = board->getSize();
+    int row = number / size;
+    int col = number % size;
+
+    int w = fullImage.width() / size;
+    int h = fullImage.height() / size;
+
+    return fullImage.copy(col * w, row * h, w, h);
 }

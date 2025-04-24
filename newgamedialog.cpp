@@ -22,28 +22,27 @@ NewGameDialog::NewGameDialog(QWidget *parent)
 
     //lambda slot
     // [=,this] - capture list: copy all variables from outer scope, copy 'this' to have access to methods
-    connect(ui->radioCustomImage, &QRadioButton::toggled, this, [=, this](bool checked){
+    connect(ui->radioCustomImage, &QRadioButton::toggled, this, [=, this](bool checked) {
         ui->browseButton->setEnabled(checked);
         if (!checked) {
             ui->labelImagePath->clear();
         }
     });
 
-    connect(ui->radioRandomImage, &QRadioButton::toggled, this, [=, this](bool checked){
-        if (!checked) return;
+    connect(ui->radioRandomImage, &QRadioButton::toggled, this, [=, this](bool checked) {
+        if (!checked)
+            return;
 
         //Images from Qt resources (resources.qrc)
-        QStringList images = {
-            ":/images/img1.png",
-            ":/images/img2.png",
-            ":/images/img3.png",
-            ":/images/img4.png",
-            ":/images/img5.png",
-            ":/images/img6.png",
-            ":/images/img7.png",
-            ":/images/img8.png",
-            ":/images/img9.png"
-        };
+        QStringList images = {":/images/img1.png",
+                              ":/images/img2.png",
+                              ":/images/img3.png",
+                              ":/images/img4.png",
+                              ":/images/img5.png",
+                              ":/images/img6.png",
+                              ":/images/img7.png",
+                              ":/images/img8.png",
+                              ":/images/img9.png"};
 
         //Pick random image from resources
         int index = QRandomGenerator::global()->bounded(images.size());
@@ -52,7 +51,10 @@ NewGameDialog::NewGameDialog(QWidget *parent)
     });
 
     connect(ui->browseButton, &QPushButton::clicked, this, [=, this]() {
-        QString filePath = QFileDialog::getOpenFileName(this, "Wybierz obraz PNG", "", "PNG Files (*.png)");
+        QString filePath = QFileDialog::getOpenFileName(this,
+                                                        "Wybierz obraz PNG",
+                                                        "",
+                                                        "PNG Files (*.png)");
         if (!filePath.isEmpty()) {
             ui->labelImagePath->setText(filePath);
         }

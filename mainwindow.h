@@ -75,8 +75,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     std::unique_ptr<Game> game;
-    PreviewWindow* previewWindow = nullptr;
+    PreviewWindow *previewWindow = nullptr;
 };
-
 
 #endif // MAINWINDOW_H

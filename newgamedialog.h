@@ -7,14 +7,13 @@
 #define NEWGAMEDIALOG_H
 
 #include <QDialog>
-#include <QFileDialog>
 #include <QDir>
-#include <QRandomGenerator>
+#include <QFileDialog>
 #include <QPixmap>
+#include <QRandomGenerator>
 #include <ui_newgamedialog.h>
 
 #include "game.h"
-
 
 namespace Ui {
 class NewGameDialog;

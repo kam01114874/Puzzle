@@ -1,4 +1,5 @@
 #include "ConsoleUI.h"
+#include <iostream>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -8,7 +9,9 @@
 
 ConsoleUI::ConsoleUI() {
     configureGame();
+    std::cout << "Game configuration complete...\n";
     game = std::make_unique<Game>(size, tileType);
+    std::cout << "Game created...\n";
     game->start();
 }
 

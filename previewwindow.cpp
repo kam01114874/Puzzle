@@ -10,7 +10,7 @@
 #include <QVBoxLayout>
 
 //Setting parent enables later automatic cleanup.
-PreviewWindow::PreviewWindow(const QPixmap& pixmap, QWidget *parent)
+PreviewWindow::PreviewWindow(const QPixmap &pixmap, QWidget *parent)
     : QWidget(parent)
 {
     setWindowTitle("Podgląd obrazka");
@@ -20,7 +20,7 @@ PreviewWindow::PreviewWindow(const QPixmap& pixmap, QWidget *parent)
     imageLabel->setPixmap(pixmap.scaled(400, 400, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
     //layout for better arrangment of elements
-    QVBoxLayout* layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(imageLabel);
 
     setLayout(layout);

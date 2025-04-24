@@ -33,7 +33,8 @@ void MovingTile::drawConsole() const
     std::cout << "|" << std::setw(5) << std::left << out.str();
 }
 
-void MovingTile::drawGraphics(QPainter* painter, const QRect& rect, const QPixmap& tileImage) const {
+void MovingTile::drawGraphics(QPainter *painter, const QRect &rect, const QPixmap &tileImage) const
+{
     //Save current painting style.
     painter->save();
 

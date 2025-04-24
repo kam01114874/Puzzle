@@ -5,10 +5,9 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <QPixmap>
 #include "ShuffleAlgorithm.h"
 #include "board.h"
-#include <QPixmap>
-
 
 /**
  * @class Game
@@ -35,9 +34,6 @@ private:
     * Needed for reset() method.
     */
     Board startState;
-
-    QPixmap fullImage;
-    bool imageMode = false;
 
 public:
     /**
@@ -99,31 +95,6 @@ public:
      * @return Reference to the board.
      */
     Board &getBoard();
-
-    /**
-     * @brief Sets the image used to display tile content.
-     * @param img QPixmap representing the full puzzle image.
-     */
-    void setImage(const QPixmap& img);
-
-    /**
-     * @brief Checks if the game is in image mode.
-     * @return True if image mode is active, otherwise false.
-     */
-    bool isImageMode() const { return imageMode; }
-
-    /**
-     * @brief Returns the full image used for tile rendering.
-     * @return The current image as QPixmap.
-     */
-    QPixmap getFullImage() const { return fullImage; }
-
-    /**
-     * @brief Retrieves a cropped tile image based on tile number.
-     * @param number Unique tile's number.
-     * @return QPixmap representing the image for the tile.
-     */
-    QPixmap getTileImageByNumber(int number) const;
 };
 
 #endif // GAME_H

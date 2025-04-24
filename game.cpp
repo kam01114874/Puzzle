@@ -6,6 +6,7 @@
  */
 
 #include "game.h"
+#include <iostream>
 
 Game::Game(int size, TileType type)
     : board(size, type)
@@ -62,22 +63,4 @@ const Board &Game::getBoard() const
 Board &Game::getBoard()
 {
     return board;
-}
-
-void Game::setImage(const QPixmap& img) {
-    fullImage = img;
-    imageMode = !img.isNull();
-}
-
-QPixmap Game::getTileImageByNumber(int number) const {
-    if (fullImage.isNull()) return QPixmap();
-
-    int size = board.getSize();
-    int row = number / size;
-    int col = number % size;
-
-    int w = fullImage.width() / size;
-    int h = fullImage.height() / size;
-
-    return fullImage.copy(col * w, row * h, w, h);
 }

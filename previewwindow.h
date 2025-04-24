@@ -9,8 +9,8 @@
 #ifndef PREVIEWWINDOW_H
 #define PREVIEWWINDOW_H
 
-#include <QWidget>
 #include <QPixmap>
+#include <QWidget>
 
 /**
  * @class PreviewWindow
@@ -30,10 +30,10 @@ public:
      * @param pixmap The full puzzle image to be shown.
      * @param parent Optional parent widget (nullptr for independent window).
      */
-    explicit PreviewWindow(const QPixmap& pixmap, QWidget *parent = nullptr);
+    explicit PreviewWindow(const QPixmap &pixmap, QWidget *parent = nullptr);
 
 private:
-    QLabel* imageLabel;
+    QLabel *imageLabel;
 };
 
 #endif // PREVIEWWINDOW_H
